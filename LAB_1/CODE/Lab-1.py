@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # Load image
-image = cv2.imread("C:/Users/kamle/Downloads/Image_for_Practice.jpg")
+image = cv2.imread("DATASET/LAB_1/Image_for_Practice.jpg")
 
 if image is None:
     print("Image not found!")
