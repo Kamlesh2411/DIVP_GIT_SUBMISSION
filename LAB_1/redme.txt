@@ -1,0 +1,1 @@
+here we performed different operation on an image.
