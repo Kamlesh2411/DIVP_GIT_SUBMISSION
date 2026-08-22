@@ -15,7 +15,7 @@ import numpy as np
 
 
 # ---------------- Image Loading ----------------
-path = "C:/Users/kamle/Downloads/lab_2_image.jpg"
+path = "DATASET/LAB_2/lab_2_image.jpg"
 
 img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
 
