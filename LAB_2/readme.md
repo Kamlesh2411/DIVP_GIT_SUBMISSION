@@ -1,0 +1,1 @@
+here we transformed image into negative, gamma and log transform.
