@@ -1,241 +1,366 @@
-Lab 1 – Image Intensity Transformations
-Aim
+# Lab 1 – Image Intensity Transformations
 
-To study and implement basic image intensity transformations such as Negative, Power-Law (Gamma), and Logarithmic Transformation using Python and OpenCV.
+## Aim
 
-Objectives
+To study and implement basic image intensity transformation methods, namely **Negative Transformation, Power-Law (Gamma) Transformation, and Logarithmic Transformation**, using Python and OpenCV.
+
+---
+
+## Objectives
 
 The objectives of this practical are:
 
-To understand image intensity transformations.
-To implement negative transformation.
-To implement Power-Law (Gamma) transformation.
-To implement logarithmic transformation.
-To observe changes in pixel intensity values.
-To perform transformations using pixel matrices and Python libraries.
-Theory
+* To understand the basics of image intensity transformations.
+* To implement negative transformation on a grayscale image.
+* To implement Power-Law (Gamma) transformation.
+* To implement logarithmic transformation.
+* To study the effect of transformations on pixel intensity values.
+* To perform transformations using pixel matrices.
+* To implement the transformations using OpenCV and NumPy.
 
-Image intensity transformation is a technique used to change the intensity values of pixels for image enhancement.
+---
 
-It is represented as:
+## Theory
 
-s = T(r)
+Image intensity transformation is a basic **Digital Image Processing** technique used to modify pixel values for image enhancement.
+
+An intensity transformation maps an input intensity `r` to an output intensity `s`.
+
+**s = T(r)**
 
 where:
 
-r = input pixel intensity
-s = output pixel intensity
-T = transformation function
+* `r` = input pixel intensity
+* `s` = output pixel intensity
+* `T` = transformation function
 
-For an 8-bit grayscale image, intensity values range from 0 to 255, where 0 represents black and 255 represents white.
+For an 8-bit grayscale image, pixel values range from **0 to 255**. Here, `0` represents black and `255` represents white.
 
-1. Negative Transformation
+Three intensity transformations are performed in this practical.
 
-Negative transformation reverses the intensity of every pixel.
+---
 
-s = (L - 1) - r
+## 1. Negative Transformation
 
-For an 8-bit image:
+Negative transformation reverses the intensity values of an image.
 
-s = 255 - r
+The transformation is given by:
 
-Example:
+**s = (L - 1) - r**
 
-Original	Negative
-0	255
-50	205
-100	155
-255	0
+For an 8-bit grayscale image:
 
-Thus, dark pixels become bright and bright pixels become dark.
+**s = 255 - r**
 
-2. Power-Law (Gamma) Transformation
+where `L = 256` represents the total number of intensity levels.
 
-Power-Law transformation is given by:
+For example:
 
-s = c × r^γ
+| **Original Pixel** | **Negative Pixel** |
+| ------------------ | ------------------ |
+| 0                  | 255                |
+| 50                 | 205                |
+| 100                | 155                |
+| 150                | 105                |
+| 255                | 0                  |
 
-The pixel is first normalized:
+This converts dark areas into bright areas and bright areas into dark areas.
 
+---
+
+## 2. Power-Law (Gamma) Transformation
+
+Power-Law transformation, also called **Gamma transformation**, is represented by:
+
+**s = c × r^γ**
+
+The input intensity is first normalized to `[0, 1]`:
+
+```
 r_norm = r / 255
+```
 
-Then:
+The transformation is then performed:
 
+```
 s_norm = c * (r_norm ** gamma)
+```
 
-The result is converted back to the range 0–255.
+The result is finally converted back to the range `[0, 255]`.
 
-Effect of Gamma
-γ < 1 → image becomes brighter.
-γ = 1 → image remains nearly unchanged.
-γ > 1 → image becomes darker.
+### Effect of Gamma
 
-In this practical:
+The Gamma value determines the brightness of the output image:
 
+* **γ < 1** → image becomes brighter.
+* **γ = 1** → image remains approximately unchanged.
+* **γ > 1** → image becomes darker.
+
+In this practical, the Gamma value used is:
+
+```
 γ = 0.5
+```
 
-A Lookup Table (LUT) can be used in OpenCV for faster processing.
+A Lookup Table (LUT) can be used in OpenCV to apply the transformation efficiently.
 
-3. Logarithmic Transformation
+---
 
-Logarithmic transformation is represented by:
+## 3. Logarithmic Transformation
 
-s = c × log(1 + r)
+The logarithmic transformation is represented by:
 
-The scaling constant is:
-
-c = 255 / log(1 + r_max)
-
-It expands lower intensity values and compresses higher intensity values. Hence, it is useful for enhancing details in dark regions.
-
-Software and Libraries Used
-Python
-OpenCV (cv2)
-NumPy
-Matplotlib
-Python Libraries
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
-Implementation
-
-The experiment is performed in two parts:
-
-Manual pixel-matrix implementation
-OpenCV and NumPy implementation
-Part A – Manual Matrix Implementation
-
-A small grayscale pixel matrix is entered manually. The matrix contains values between 0 and 255, along with a Gamma value.
-
-The three transformations are then applied to the matrix.
-
-1. Manual Natural Logarithm
-
-A custom manual_ln() function can be used to calculate the natural logarithm using a Taylor series.
-
-ln(x) = 2 × [z + z³/3 + z⁵/5 + ...]
+**s = c × log(1 + r)**
 
 where:
 
-z = (x - 1) / (x + 1)
-
-2. Negative Transformation
-
-Each pixel is transformed using:
-
-new_pixel = 255 - pixel
-
-The operation is performed on every element of the input matrix.
-
-3. Power-Law Transformation
-
-The pixel is normalized first:
-
-r_norm = pixel / 255
-
-Then:
-
-s_norm = r_norm ** gamma
-
-The result is converted back to the range 0–255.
-
-4. Logarithmic Transformation
+* `r` = input pixel intensity
+* `s` = output pixel intensity
+* `c` = scaling constant
 
 The scaling constant is calculated as:
 
-c = 255 / manual_ln(1 + max_pixel)
+**c = 255 / log(1 + r_max)**
 
-The transformed pixel is calculated using:
+where `r_max` is the highest pixel intensity in the image.
 
+Logarithmic transformation increases lower intensity values and compresses higher intensity values. It is useful for improving details in darker regions.
+
+---
+
+# Software and Libraries Used
+
+The following software and Python libraries are used:
+
+* **Python**
+* **OpenCV (`cv2`)**
+* **NumPy**
+* **Matplotlib**
+
+### Python Libraries
+
+```
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
+---
+
+# Implementation
+
+The practical is performed in two stages:
+
+1. **Manual implementation using a pixel matrix**
+2. **Image processing using OpenCV and NumPy**
+
+---
+
+## Part A – Manual Matrix Implementation
+
+A user-defined grayscale image matrix is taken as input.
+
+The program accepts:
+
+* Number of rows
+* Number of columns
+* Pixel values between 0 and 255
+* Gamma value for Power-Law transformation
+
+The input matrix is then processed using the three transformations.
+
+### 1. Manual Natural Logarithm
+
+A custom `manual_ln()` function is used to calculate the natural logarithm using a Taylor series.
+
+The formula used is:
+
+**ln(x) = 2 × [z + z³/3 + z⁵/5 + ...]**
+
+where:
+
+**z = (x - 1) / (x + 1)**
+
+This provides the logarithm value without directly using Python's logarithm function.
+
+### 2. Negative Transformation
+
+The negative transformation is performed using:
+
+```
+new_pixel = max_intensity - pixel
+```
+
+For an 8-bit image:
+
+```
+new_pixel = 255 - pixel
+```
+
+The operation is applied to every pixel in the input matrix.
+
+### 3. Power-Law Transformation
+
+The input pixel is first normalized:
+
+```
+r_norm = pixel / max_intensity
+```
+
+The Power-Law transformation is then applied:
+
+```
+s_norm = c * (r_norm ** gamma)
+```
+
+The result is converted back to the intensity range `[0, 255]`.
+
+### 4. Logarithmic Transformation
+
+A scaling constant is calculated using the maximum intensity:
+
+```
+c = max_intensity / manual_ln(1 + max_intensity)
+```
+
+The logarithmic transformation is then applied:
+
+```
 s = c * manual_ln(1 + pixel)
+```
 
-The final value is restricted to 0–255.
+The output values are limited to the range 0 to 255.
 
-Part B – Image Processing Using OpenCV
+---
 
-A grayscale image is loaded using:
+# Part B – Image Processing Using OpenCV
 
+A grayscale image is loaded using OpenCV:
+
+```
 img = cv2.imread("Lab1/image.jpg", cv2.IMREAD_GRAYSCALE)
+```
 
 The three transformations are then applied to the image.
 
-Negative Transformation Using OpenCV
+---
 
-The negative image is obtained using:
+## Negative Transformation Using OpenCV
 
+The negative image is generated using:
+
+```
 neg_img = cv2.bitwise_not(img)
+```
 
-This reverses the intensity values of all pixels.
+This reverses the intensity value of each pixel.
 
-Power-Law Transformation Using OpenCV
+---
+
+## Power-Law Transformation Using OpenCV
+
+A Lookup Table containing transformed values for all 256 grayscale levels is generated.
 
 The Gamma value used is:
 
+```
 gamma = 0.5
+```
 
-A Lookup Table is generated:
+The lookup table is created using:
 
+```
 lut = np.array(
     [((i / 255.0) ** 0.5) * 255 for i in np.arange(0, 256)]
 ).astype("uint8")
+```
 
-The LUT is applied using:
+The LUT is then applied using:
 
+```
 gamma_img = cv2.LUT(img, lut)
+```
 
-LUT improves efficiency because the transformation is calculated for all 256 intensity values beforehand.
+Using a LUT reduces repeated calculations and makes the transformation faster.
 
-Logarithmic Transformation Using OpenCV and NumPy
+---
 
-The maximum pixel value is found using:
+## Logarithmic Transformation Using OpenCV and NumPy
 
+The maximum pixel value is obtained using:
+
+```
 max_pixel_val = float(np.max(img))
+```
 
-The scaling constant is:
+The scaling constant is calculated as:
 
+```
 c = 255 / np.log(1 + max_pixel_val)
+```
 
-The transformation is applied using:
+The logarithmic transformation is applied using NumPy:
 
+```
 log_img = np.array(
     c * np.log1p(img.astype(np.float32)),
     dtype=np.uint8
 )
+```
 
-np.log1p() calculates log(1 + x) accurately.
+`np.log1p()` is used to calculate `log(1 + x)` accurately.
 
-Algorithm / Procedure
-Start the program.
-Import the required libraries.
-Define the pixel matrix or grayscale image.
-Enter the Gamma value.
-Apply Negative Transformation.
-Apply Power-Law Transformation.
-Apply Logarithmic Transformation.
-Display the transformed matrices.
-Load the image using OpenCV.
-Apply the three transformations.
-Display or save the output images.
-Stop the program.
-Input
+---
 
-The input consists of:
+# Algorithm / Procedure
 
-A grayscale image named image.jpg.
-Pixel values between 0 and 255.
-A user-defined Gamma value.
+1. Start the program.
+2. Define the grayscale image or pixel matrix.
+3. Enter the required matrix dimensions and pixel values.
+4. Enter the Gamma value.
+5. Apply Negative Transformation.
+6. Apply Power-Law (Gamma) Transformation.
+7. Apply Logarithmic Transformation.
+8. Display the transformed matrices.
+9. Load the grayscale image using OpenCV.
+10. Apply Negative Transformation using `cv2.bitwise_not()`.
+11. Generate the Lookup Table for Gamma transformation.
+12. Apply the LUT using `cv2.LUT()`.
+13. Calculate the logarithmic scaling constant.
+14. Apply logarithmic transformation using NumPy.
+15. Display or save the transformed images.
+16. End the program.
 
-The image is loaded from:
+---
 
+# Input
+
+The input for the practical consists of:
+
+* A grayscale image stored as `image.jpg`.
+* Pixel intensity values between **0 and 255**.
+* A user-defined Gamma value.
+
+For the OpenCV implementation, the image is loaded from:
+
+```
 Lab1/image.jpg
-Result
+```
 
-The Negative, Power-Law, and Logarithmic transformations were successfully implemented using both manual pixel operations and Python libraries.
+---
 
-The negative transformation inverted the image, Gamma transformation with γ = 0.5 increased brightness, and logarithmic transformation enhanced details in darker regions.
+# Result
 
-Conclusion
+The **Negative, Power-Law (Gamma), and Logarithmic intensity transformations** were successfully implemented using manual pixel-matrix operations and Python libraries.
 
-The experiment demonstrated three basic intensity transformation techniques: Negative, Power-Law, and Logarithmic Transformation.
+The Negative Transformation inverted the intensity values. The Power-Law transformation with `γ = 0.5` produced a brighter image, while the Logarithmic Transformation improved details in darker regions.
 
-Both manual matrix operations and OpenCV/NumPy implementations were performed to understand how pixel intensities can be modified for image enhancement.
+Thus, the practical successfully demonstrated basic image intensity transformations using **Python, OpenCV, and NumPy**.
+
+---
+
+# Conclusion
+
+In this practical, **Negative, Power-Law (Gamma), and Logarithmic Transformation** techniques were studied and implemented.
+
+The experiment demonstrated how pixel intensity values can be modified mathematically for image enhancement. Both manual matrix operations and library-based methods were used to understand the practical implementation of intensity transformations in Python.
