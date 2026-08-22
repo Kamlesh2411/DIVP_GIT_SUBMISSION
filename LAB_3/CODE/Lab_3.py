@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # ---------------------------------------------------
 
 # Change these image names according to your files
-source1 = cv2.imread("C:/Users/kamle/Downloads/source_1.jpg", 0)      # Dark image
+source1 = cv2.imread("DATASET/LAB_3/source_1.jpg", 0)      # Dark image
 source2 = cv2.imread("C:/Users/kamle/Downloads/source_2.jpg", 0)      # Bright image
 reference = cv2.imread("C:/Users/kamle/Downloads/referance-image.jpg", 0)  # Reference image
 
